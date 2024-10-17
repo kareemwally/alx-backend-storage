@@ -2,4 +2,5 @@
 -- Glam rock band
 select band_name, IFNULL(split - formed, 2022 - formed) as lifespan
 from metal_bands
-where style='Glam rock';
+where style='Glam rock'
+ORDER BY lifespan DESC;
