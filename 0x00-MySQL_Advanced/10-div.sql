@@ -1,8 +1,9 @@
 -- making a function to divide two params
+-- the result is zero if b is zero
 DELIMITER //
 
 CREATE FUNCTION SafeDiv(a INT, b INT)
-RETURNS DECIMAL(10,4)
+RETURNS float
 DETERMINISTIC
 BEGIN
     IF b = 0 THEN
