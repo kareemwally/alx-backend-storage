@@ -1,6 +1,5 @@
--- 
--- 
-use test;
+-- making a procedure to apply bonus on a certain project
+-- for a certain user
 delimiter $$
 create procedure AddBonus(user_id int, project_name varchar(255), score int)
 begin
