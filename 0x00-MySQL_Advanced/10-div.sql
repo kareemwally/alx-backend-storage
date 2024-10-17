@@ -1,8 +1,15 @@
--- 
-create function SafeDiv(IN a int, IN b int) return int
-begin
-	declare res int;
-	if b = 0 then
-		return 0;
-	else
-		return a/b;
+-- making a function to divide two params
+DELIMITER //
+
+CREATE FUNCTION SafeDiv(a INT, b INT)
+RETURNS DECIMAL(10,4)
+DETERMINISTIC
+BEGIN
+    IF b = 0 THEN
+        RETURN 0;
+    ELSE
+        RETURN a / b;
+    END IF;
+END //
+
+DELIMITER ;
