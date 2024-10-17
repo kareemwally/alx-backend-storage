@@ -7,7 +7,7 @@ AFTER UPDATE ON users
 FOR EACH ROW
 BEGIN
     IF NEW.email <> OLD.email THEN
-        SET NEW.valid_email = NOT OLD.valid_email;
+        SET NEW.valid_email = 1 - OLD.valid_email;
     END IF;
 END $$
 
