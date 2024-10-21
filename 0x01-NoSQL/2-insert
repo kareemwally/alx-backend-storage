@@ -1,0 +1,4 @@
+// inserting a document in the `school` document in the given database
+use process.argv[1]
+db.createCollection('school')
+db.school.insert({name: 'Holberton school'})
