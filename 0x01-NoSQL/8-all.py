@@ -11,8 +11,5 @@ if __name__ == "__main__":
         """
         the monogo_collection that contains documents
         """
-        try:
-            res = list(mongo_collection.find())
-            return res
-        except *:
-            print("can't connect to", mongo_collection)
+        res = list(mongo_collection.find())
+        return res
