@@ -1,0 +1,5 @@
+// countnig the total number of documents in `school` collection
+use process.argv[1]
+db.school.count()
+// a nother sol:
+// db.school.find().count()
