@@ -15,3 +15,7 @@ def list_all(mongo_collection):
         return res
     except *:
         print("can't connect to", mongo_collection)
+
+
+if __name__ == "__main__":
+    list_all()
