@@ -11,8 +11,7 @@ def insert_school(mongo_collection, **kwargs):
     the monogo_collection that contains documents
     the kwargs is the new document
     """
-    res = mongo_collection.insert_one(dict(kwargs))
-    Id = res.insertedId
+    Id = mongo_collection.insert_one(dict(kwargs)).inserted_id
     return Id
 
 
