@@ -12,7 +12,7 @@ def update_topics(mongo_collection, name, topics):
     name: the name of document to update
     topics: the new list of topics each school will have
     """
-    new_values = {'$set': topics}
+    new_values = {'$set': {topics:topics}}
     mongo_collection.update_one({name: name}, new_values)
 
 
