@@ -12,8 +12,10 @@ def update_topics(mongo_collection, name, topics):
     name: the name of document to update
     topics: the new list of topics each school will have
     """
-    mongo_collection.update_one({'name': name}, {'$set': {'topics': topics}})
+    update = {"$set": {"topics": topics}}
+    query = {"name": name}
 
+    mongo_collection.update_many(query, update)
 
 if __name__ == "__main__":
     update_topics()
