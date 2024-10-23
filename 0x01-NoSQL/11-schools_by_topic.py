@@ -11,11 +11,9 @@ def schools_by_topic(mongo_collection, topic):
     the monogo_collection that contains documents
     topic: a topic to search for
     """
-    results = mongo_collection.find()
-    res = []
-    for document in results:
-        if topic in document['topics']:
-            res.append(document)
+    results = list(mongo_collection.find({'topics': topic}))
+    return results
+
 
 if __name__ == "__main__":
     schools_by_topic()
