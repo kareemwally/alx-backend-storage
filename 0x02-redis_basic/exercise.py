@@ -7,6 +7,7 @@ import redis
 import uuid
 from typing import Union
 
+
 class Cache:
     """
     the base class of the cashing system in project
@@ -18,12 +19,11 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
-    def store(self, data: Union[int, float, str, bytes]) -> uuid.UUID:
+    def store(self, data: Union[int, float, str, bytes]) -> set:
         """
         storing the specifed data whether it's int or float or string
         or bytes
         """
         key = str(uuid.uuid4())
-        self._redis.mset({key: data})
+        self._redis.set(key, data)
         return key
-
