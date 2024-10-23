@@ -9,6 +9,28 @@ from typing import Union, Any, Optional, Callable
 annotations = Union[str, bytes, int, float]
 
 
+def count_calls(method: Callable) -> Callable:
+    """
+    Decorator to count how many times a method is called.
+    Uses the method's qualified name as the key in Redis.
+    Args:
+        method: The method to be decorated
+    Returns:
+        Callable: The wrapped method that counts calls
+    """
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        """
+        Wrapper function that increments the counter
+        and calls the method
+        """
+        # Increment the counter using the method's qualified name
+        self._redis.incr(method.__qualname__)
+        # Call and return the original method
+        return method(self, *args, **kwargs)
+    return wrapper
+
+
 class Cache:
     """
     the base class of the cashing system in project
