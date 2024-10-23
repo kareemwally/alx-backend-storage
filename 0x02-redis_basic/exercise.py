@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """
-a simple module to deal with redis by sending data
-in form of Key(bytes) :value(any data)
+A simple module to deal with redis by sending data
+in form of Key(bytes) : value(any data)
 """
 import redis
 import uuid
-from typing import Union, Any, Optional, Callable
-annotations = Union[str, bytes, int, float]
+from typing import Union, Callable, Optional, Any
+from functools import wraps
+
+RedisValue = Union[str, bytes, int, float]
 
 
 def count_calls(method: Callable) -> Callable:
@@ -14,32 +16,38 @@ def count_calls(method: Callable) -> Callable:
     Decorator to count how many times a method is called.
     Uses the method's qualified name as the key in Redis.
     """
+    key = method.__qualname__
     @wraps(method)
     def wrapper(self, *args, **kwargs):
         """
         Wrapper function that increments the counter
         and calls the method
         """
-        self._redis.incr(method.__qualname__)
+        self._redis.incr(key)
         return method(self, *args, **kwargs)
     return wrapper
 
 
 class Cache:
     """
-    the base class of the cashing system in project
+    The base class of the caching system in project.
+    Handles storage and retrieval of data with type conversion support.
     """
     def __init__(self):
         """
-        instiating the connection with redis server on localhost
+        Instantiating the connection with redis server on localhost
         """
         self._redis = redis.Redis()
         self._redis.flushdb()
 
-    def store(self, data: annotations) -> str:
+    @count_calls
+    def store(self, data: RedisValue) -> str:
         """
-        storing the specifed data whether it's int or float or string
-        or bytes
+        Store the specified data whether
+        it's int, float, string or bytes.
+
+        This method's calls are counted using the count_calls
+        decorator.
         """
         key = str(uuid.uuid4())
         self._redis.set(key, data)
