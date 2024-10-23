@@ -29,10 +29,26 @@ class Cache:
         self._redis.set(key, data)
         return key
 
+    def get_int(self, key):
+        """
+        the fn is integer
+        it returns data in int format
+        """
+        return self.get(key, fn=int)
+
+    def get_str(self, key):
+        """
+        the fn is str
+        it returns data in str format
+        """
+        return self.get(key, fn=lambda d: d.decode("utf-8"))
+
     def get(self, key: str, fn: callable) -> annotations:
         """
         getting the data the way fn is
         """
+        if key is None:
+            return None
         if fn is None:
             return self._redis.get(key)
         else:
