@@ -6,6 +6,7 @@ in form of Key(bytes) :value(any data)
 import redis
 import uuid
 from typing import Union
+annotations = Union[str, bytes, int, float]
 
 
 class Cache:
@@ -19,7 +20,7 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
-    def store(self, data: Union[str, bytes, int, float]) -> str:
+    def store(self, data: annotations) -> str:
         """
         storing the specifed data whether it's int or float or string
         or bytes
@@ -27,3 +28,12 @@ class Cache:
         key = str(uuid.uuid4())
         self._redis.set(key, data)
         return key
+
+    def get(self, key: str, fn: callable) -> annotations:
+        """
+        getting the data the way fn is
+        """
+        if fn is None:
+            return self._redis.get(key)
+        else:
+            return fn(self._redis.get(key))
