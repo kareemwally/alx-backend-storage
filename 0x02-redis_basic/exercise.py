@@ -5,7 +5,7 @@ in form of Key(bytes) :value(any data)
 """
 import redis
 import uuid
-from typing import Union
+from typing import Union, Any, Optional, Callable
 annotations = Union[str, bytes, int, float]
 
 
@@ -29,27 +29,24 @@ class Cache:
         self._redis.set(key, data)
         return key
 
-    def get_int(self, key):
+    def get(self, key: str, fn: Optional[Callable] = None) -> Any:
         """
-        the fn is integer
-        it returns data in int format
+        Retrieve data from Redis and
+        optionally convert it using the provided function.
         """
-        return self.get(key, fn=int)
+        value = self._redis.get(key)
+        if value is None:
+            return None
+        return fn(value) if fn is not None else value
 
-    def get_str(self, key):
+    def get_str(self, key: str) -> Optional[str]:
         """
-        the fn is str
-        it returns data in str format
+        Retrieve a string value from Redis.
         """
         return self.get(key, fn=lambda d: d.decode("utf-8"))
 
-    def get(self, key: str, fn: callable) -> annotations:
+    def get_int(self, key: str) -> Optional[int]:
         """
-        getting the data the way fn is
+        Retrieve an integer value from Redis.
         """
-        if key is None:
-            return None
-        if fn is None:
-            return self._redis.get(key)
-        else:
-            return fn(self._redis.get(key))
+        return self.get(key, fn=int)
