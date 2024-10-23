@@ -14,14 +14,14 @@ def stats():
     """
     generating number of Methods
     """
-    number_of_requests = nginx_collection.find().count()
-    number_GET = nginx_collection.find({method: 'GET'}).count()
-    number_POST = nginx_collection.find({method: 'POST'}).count()
-    number_PUT = nginx_collection.find({method: 'PUT'}).count()
-    number_PATCH = nginx_collection.find({method: 'PATCH'}).count()
-    number_DELETE = nginx_collection.find({method: 'DELETE'}).count()
-    number_status = nginx_collection.find({method: 'GET',
-                                          path: '/status'}).count()
+    number_of_requests = nginx_collection.count_documents({})
+    number_GET = nginx_collection.count_documents({'method': 'GET'})
+    number_POST = nginx_collection.count_documents({'method': 'POST'})
+    number_PUT = nginx_collection.count_documents({'method': 'PUT'})
+    number_PATCH = nginx_collection.count_documents({'method': 'PATCH'})
+    number_DELETE = nginx_collection.count_documents({'method': 'DELETE'})
+    number_status = nginx_collection.count_documents({'method': 'GET',
+                                                     'path': '/status'})
 
     print('{} logs'.format(number_of_requests))
     print('Methods:')
@@ -30,6 +30,7 @@ def stats():
     print('\tmethod PUT: {}'.format(number_PUT))
     print('\tmethod PATCH: {}'.format(number_PATCH))
     print('\tmethod DELETE: {}'.format(number_DELETE))
+    print('{} status check'.format(number_status))
 
 
 if __name__ == "__main__":
