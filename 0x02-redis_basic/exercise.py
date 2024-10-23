@@ -19,7 +19,7 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
-    def store(self, data: Union[int, float, str, bytes]) -> set:
+    def store(self, data: Union[int, float, str, bytes]) -> str:
         """
         storing the specifed data whether it's int or float or string
         or bytes
